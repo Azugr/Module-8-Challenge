@@ -1,15 +1,20 @@
-// import the classes
-import Truck from "../classes/Truck.js";
-import Motorbike from "../classes/Motorbike.js";
-import Car from "../classes/Car.js";
+class Wheel {
+  private _diameter: number;
+  private _tireBrand: string;
 
-// define the interface
-interface AbleToTow {
-    // declare the properties
-    towingCapacity: number;
-    // tow method takes a truck or a motorbike or a car as an argument
-    tow(vehicle: Truck | Motorbike | Car): void;
+  constructor(diameter: number = 15, tireBrand: string = 'Generic') {
+    this._diameter = diameter;
+    this._tireBrand = tireBrand;
+  }
+
+  // Getters to access private properties
+  get diameter(): number {
+    return this._diameter;
+  }
+
+  get tireBrand(): string {
+    return this._tireBrand;
+  }
 }
 
-// export the interface
-export default AbleToTow;
+export default Wheel;

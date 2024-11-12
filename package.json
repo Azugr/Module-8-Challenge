@@ -1,23 +1,24 @@
 {
-    "name": "develop",
-    "version": "1.0.0",
-    "description": "",
-    "main": "dist/index.js",
-    "type": "module",
-    "scripts": {
-      "build": "npx tsc",
-      "start": "npm run build && node dist/index.js",
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-      "inquirer": "^9.2.19",
-      "typescript": "^5.4.5"
-    },
-    "devDependencies": {
-      "@types/inquirer": "^9.0.7",
-      "@types/node": "^20.12.7"
-    }
+  "name": "develop",
+  "version": "1.0.0",
+  "description": "A TypeScript CLI application for creating and managing vehicles such as cars, trucks, and motorbikes.",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "npm run build && node dist/index.js",
+    "watch": "npx tsc --watch",
+    "clean": "rm -rf dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Azucena Garcia",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^9.3.7",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.12.7"
   }
-  
+}
