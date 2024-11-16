@@ -1,16 +1,16 @@
-// Import the classes
+// Import the classes representing different vehicle types
 import Truck from "../classes/Truck.js";
 import Motorbike from "../classes/Motorbike.js";
 import Car from "../classes/Car.js";
 
-// Define the interface
+// Define the AbleToTow interface, specifying a contract for towable vehicles
 interface AbleToTow {
-    // declare the properties
+    // Optional property to specify the towing capacity of the vehicle
     towingCapacity?: number;
 
-    // Tow method takes a truck or a motorbike or a car as an argument
+    // Method to tow another vehicle, accepting a Truck, Motorbike, or Car as an argument
     tow(vehicle: Truck | Motorbike | Car): void;
 }
 
-// Export the interface
+// Export the AbleToTow interface for use in other modules
 export default AbleToTow;

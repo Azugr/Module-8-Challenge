@@ -6,15 +6,16 @@ import Wheel from "./Wheel.js";
 import type AbleToTow from '../interfaces/AbleToTow.js';
 import type Driveable from '../interfaces/Driveable.js';
 
+// The CLI class to manage vehicle creation, selection, and interactions
 class Cli {
-  vehicles: (Car | Truck | Motorbike)[];
-  selectedVehicleVin: string | undefined;
-  exit: boolean = false;
-
+  vehicles: (Car | Truck | Motorbike)[]; // Array of vehicles (Car, Truck, or Motorbike)
+  selectedVehicleVin: string | undefined; // VIN of the selected vehicle for actions
+  exit: boolean = false; // Flag to determine when to exit the CLI
   constructor(vehicles: (Car | Truck | Motorbike)[] = []) {
     this.vehicles = vehicles;
   }
 
+   // Generates a unique VIN for each vehicle
   static generateVin(): string {
     return (
       Math.random().toString(36).substring(2, 15) +
@@ -40,7 +41,7 @@ class Cli {
           this.chooseVehicle();
         } else {
           console.log("No vehicles available. Please create a new vehicle first.");
-          this.startCli(); // Properly calling startCli
+          this.startCli(); // Restart the CLI menu
         }
       });
   }
@@ -307,78 +308,111 @@ class Cli {
       });
   }
 
-  // Method to perform actions on the selected vehicle
-  performActions(): void {
-    inquirer
-      .prompt([
-        {
-          type: "list",
-          name: "action",
-          message: "Select an action to perform",
-          choices: ["Start", "Accelerate", "Decelerate", "Stop", "Turn", "Reverse", "Exit"],
-        },
-      ])
-      .then((answers) => {
-        const vehicle = this.getSelectedVehicle();
-        if (!vehicle) {
-          console.log("No vehicle selected.");
-          return;
-        }
-
-        switch (answers.action) {
-          case "Start":
-            if (this.isDriveable(vehicle)) {
-              vehicle.start();
-            } else {
-              console.log("This vehicle cannot start.");
-            }
-            break;
-          case "Accelerate":
-            if (this.isDriveable(vehicle)) {
-              vehicle.accelerate(5);
-            } else {
-              console.log("This vehicle cannot accelerate.");
-            }
-            break;
-          case "Decelerate":
-            if (this.isDriveable(vehicle)) {
-              vehicle.decelerate(5);
-            } else {
-              console.log("This vehicle cannot decelerate.");
-            }
-            break;
-          case "Stop":
-            if (this.isDriveable(vehicle)) {
-              vehicle.stop();
-            } else {
-              console.log("This vehicle cannot stop.");
-            }
-            break;
-          case "Turn":
-            if (this.isDriveable(vehicle)) {
-              vehicle.turn("right");
-            } else {
-              console.log("This vehicle cannot turn.");
-            }
-            break;
-          case "Reverse":
-            if (this.isDriveable(vehicle)) {
-              vehicle.reverse();
-            } else {
-              console.log("This vehicle cannot reverse.");
-            }
-            break;
-          case "Exit":
-            this.exit = true;
-            console.log("Exiting...");
-            break;
-        }
-
-        if (!this.exit) {
-          this.performActions();
-        }
-      });
+// Method to perform actions on the selected vehicle
+performActions(): void {
+  const vehicle = this.getSelectedVehicle();
+  if (!vehicle) {
+    console.log("No vehicle selected.");
+    return;
   }
+
+  // Define available actions based on the vehicle type
+  const actions = [
+    "Start", 
+    "Accelerate", 
+    "Decelerate", 
+    "Stop", 
+    "Turn", 
+    "Reverse", 
+    ...(vehicle instanceof Motorbike ? ["Wheelie"] : []), // Add "Wheelie" only for Motorbike
+    ...(vehicle instanceof Truck ? ["Tow"] : []), // Add "Tow" only for Truck
+    "Exit"
+  ];
+
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "action",
+        message: "Select an action to perform",
+        choices: actions, // Use the dynamically constructed actions array
+      },
+    ])
+    .then((answers) => {
+      switch (answers.action) {
+        case "Start":
+          if (this.isDriveable(vehicle)) {
+            vehicle.start();
+          } else {
+            console.log("This vehicle cannot start.");
+          }
+          break;
+        case "Accelerate":
+          if (this.isDriveable(vehicle)) {
+            vehicle.accelerate(5);
+          } else {
+            console.log("This vehicle cannot accelerate.");
+          }
+          break;
+        case "Decelerate":
+          if (this.isDriveable(vehicle)) {
+            vehicle.decelerate(5);
+          } else {
+            console.log("This vehicle cannot decelerate.");
+          }
+          break;
+        case "Stop":
+          if (this.isDriveable(vehicle)) {
+            vehicle.stop();
+          } else {
+            console.log("This vehicle cannot stop.");
+          }
+          break;
+        case "Turn":
+          if (this.isDriveable(vehicle)) {
+            vehicle.turn("right");
+          } else {
+            console.log("This vehicle cannot turn.");
+          }
+          break;
+        case "Reverse":
+          if (this.isDriveable(vehicle)) {
+            vehicle.reverse();
+          } else {
+            console.log("This vehicle cannot reverse.");
+          }
+          break;
+        case "Wheelie":
+          if (vehicle instanceof Motorbike) {
+            vehicle.wheelie(); // Perform the Wheelie action
+          } else {
+            console.log("This action is not available for this vehicle.");
+          }
+          break;
+        case "Tow":
+          if (vehicle instanceof Truck) {
+            const vehicleToTow = this.vehicles.find(v => v.vin !== vehicle.vin);
+            if (vehicleToTow) {
+              vehicle.tow(vehicleToTow); // Perform the Tow action
+            } else {
+              console.log("No other vehicles available to tow.");
+            }
+          } else {
+            console.log("This action is not available for this vehicle.");
+          }
+          break;
+        case "Exit":
+          this.exit = true;
+          console.log("Exiting...");
+          break;
+      }
+
+      // If the user didn't select "Exit", continue to offer actions
+      if (!this.exit) {
+        this.performActions();
+      }
+    });
+}
 
   // Helper method to get the selected vehicle by VIN
   private getSelectedVehicle() {

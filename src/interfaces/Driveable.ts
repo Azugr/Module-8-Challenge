@@ -1,21 +1,30 @@
-//Definition of the Driveable interface
+// Definition of the Driveable interface, specifying a contract for driveable vehicles
 
 interface Driveable {
+  // Property to indicate if the vehicle is started
+  started: boolean;
 
-    // declare the properties
-    started: boolean;
-    currentSpeed: number;
-    
-    // declare the methods
-    start(): void;
-    accelerate(change: number): void;
-    decelerate(change: number): void;
-    stop(): void;
-    turn(direction: string): void;
-    reverse(): void;
-  }
+  // Property to store the vehicle's current speed
+  currentSpeed: number;
   
-  // export the Driveable interface
-  export default Driveable;
+  // Method to start the vehicle
+  start(): void;
 
-  
+  // Method to increase the vehicle's speed by a specified amount
+  accelerate(change: number): void;
+
+  // Method to decrease the vehicle's speed by a specified amount
+  decelerate(change: number): void;
+
+  // Method to stop the vehicle, resetting its speed and started status
+  stop(): void;
+
+  // Method to turn the vehicle in a specified direction (e.g., "left" or "right")
+  turn(direction: string): void;
+
+  // Method to reverse the vehicle's movement
+  reverse(): void;
+}
+
+// Export the Driveable interface for use in other modules
+export default Driveable;
