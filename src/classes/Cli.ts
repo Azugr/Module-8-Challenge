@@ -271,103 +271,103 @@ class Cli {
   }
 
   // Method to create a Motorbike with prompts and validation
-  async createMotorbike(): Promise<void> {
-    const answers = await inquirer.prompt<{
-      make: keyof typeof motorbikeModels;
-    }>([
-      {
-        type: "list",
-        name: "make",
-        message: "Select the motorbike make:",
-        choices: Object.keys(motorbikeModels),
-      },
-    ]);
+async createMotorbike(): Promise<void> {
+  const answers = await inquirer.prompt<{
+    make: keyof typeof motorbikeModels;
+  }>([
+    {
+      type: "list",
+      name: "make",
+      message: "Select the motorbike make:",
+      choices: Object.keys(motorbikeModels),
+    },
+  ]);
 
-    const selectedMakeModels = motorbikeModels[answers.make];
+  const selectedMakeModels = motorbikeModels[answers.make];
 
-    const { model, year, color, weight, topSpeed } = await inquirer.prompt([
-      {
-        type: "list",
-        name: "model",
-        message: `Select a model for ${answers.make}:`,
-        choices: selectedMakeModels || [],
+  const { model, year, color, weight, topSpeed } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "model",
+      message: `Select a model for ${answers.make}:`,
+      choices: selectedMakeModels || [],
+    },
+    {
+      type: "input",
+      name: "year",
+      message: "Enter the motorbike year:",
+      validate: (input) => {
+        const parsed = parseInt(input, 10);
+        return !isNaN(parsed) && parsed > 1885 && parsed <= new Date().getFullYear()
+          ? true
+          : "Please enter a valid year.";
       },
-      {
-        type: "input",
-        name: "year",
-        message: "Enter the motorbike year:",
-        validate: (input) => {
-          const parsed = parseInt(input, 10);
-          return !isNaN(parsed) && parsed > 1885 && parsed <= new Date().getFullYear()
-            ? true
-            : "Please enter a valid year.";
-        },
-      },
-      {
-        type: "list",
-        name: "color",
-        message: "Select the motorbike color:",
-        choices: ["Red", "Blue", "Green", "Yellow", "Black", "White", "Gray", "Purple", "Orange", "Pink"],
-      },
-      {
-        type: "list",
-        name: "weight",
-        message: "Select the motorbike weight:",
-        choices: ["150 kg", "200 kg", "250 kg", "300 kg", "350 kg"],
-      },
-      {
-        type: "list",
-        name: "topSpeed",
-        message: "Select the motorbike top speed:",
-        choices: ["80 km/h", "100 km/h", "120 km/h", "150 km/h"],
-      },
-    ]);
+    },
+    {
+      type: "list",
+      name: "color",
+      message: "Select the motorbike color:",
+      choices: ["Red", "Blue", "Green", "Yellow", "Black", "White", "Gray", "Purple", "Orange", "Pink"],
+    },
+    {
+      type: "list",
+      name: "weight",
+      message: "Select the motorbike weight:",
+      choices: ["150 kg", "200 kg", "250 kg", "300 kg", "350 kg"],
+    },
+    {
+      type: "list",
+      name: "topSpeed",
+      message: "Select the motorbike top speed:",
+      choices: ["80 km/h", "100 km/h", "120 km/h", "150 km/h"],
+    },
+  ]);
 
-    const { frontWheelDiameter, frontWheelBrand, rearWheelDiameter, rearWheelBrand } = await inquirer.prompt([
-      {
-        type: "list",
-        name: "frontWheelDiameter",
-        message: "Select the front wheel diameter (inches):",
-        choices: ["16 inch", "17 inch", "18 inch"],
-      },
-      {
-        type: "list",
-        name: "frontWheelBrand",
-        message: "Select the front wheel tire brand:",
-        choices: ["Pirelli", "Michelin", "Dunlop"],
-      },
-      {
-        type: "list",
-        name: "rearWheelDiameter",
-        message: "Select the rear wheel diameter (inches):",
-        choices: ["16 inch", "17 inch", "18 inch"],
-      },
-      {
-        type: "list",
-        name: "rearWheelBrand",
-        message: "Select the rear wheel tire brand:",
-        choices: ["Pirelli", "Michelin", "Dunlop"],
-      },
-    ]);
-     
-    const newMotorbike = new Motorbike(
-      Cli.generateVin(),
-      color,
-      answers.make,
-      model,
-      parseInt(year, 10),
-      parseFloat(weight.split(" ")[0]),
-      parseFloat(topSpeed.split(" ")[0]),
-      [
-        new Wheel(parseInt(frontWheelDiameter.split(" ")[0], 10), frontWheelBrand),
-        new Wheel(parseInt(rearWheelDiameter.split(" ")[0], 10), rearWheelBrand),
-      ]
-    );
+  const { frontWheelDiameter, frontWheelBrand, rearWheelDiameter, rearWheelBrand } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "frontWheelDiameter",
+      message: "Select the front wheel diameter (inches):",
+      choices: ["16 inch", "17 inch", "18 inch"],
+    },
+    {
+      type: "list",
+      name: "frontWheelBrand",
+      message: "Select the front wheel tire brand:",
+      choices: ["Pirelli", "Michelin", "Dunlop"],
+    },
+    {
+      type: "list",
+      name: "rearWheelDiameter",
+      message: "Select the rear wheel diameter (inches):",
+      choices: ["16 inch", "17 inch", "18 inch"],
+    },
+    {
+      type: "list",
+      name: "rearWheelBrand",
+      message: "Select the rear wheel tire brand:",
+      choices: ["Pirelli", "Michelin", "Dunlop"],
+    },
+  ]);
 
-    this.vehicles.push(newMotorbike);
-    console.log("Motorbike created successfully!");
-    this.startCli();
-  }
+  const newMotorbike = new Motorbike(
+    Cli.generateVin(),
+    color,
+    answers.make,
+    model,
+    parseInt(year, 10),
+    parseFloat(weight.split(" ")[0]),
+    parseFloat(topSpeed.split(" ")[0]),
+    [
+      new Wheel(parseInt(frontWheelDiameter.split(" ")[0], 10), frontWheelBrand),
+      new Wheel(parseInt(rearWheelDiameter.split(" ")[0], 10), rearWheelBrand),
+    ]
+  );
+
+  this.vehicles.push(newMotorbike);
+  console.log("Motorbike created successfully!");
+  this.startCli();
+}
 
   // Method to perform actions on the selected vehicle
   async performActions(): Promise<void> {
