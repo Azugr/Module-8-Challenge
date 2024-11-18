@@ -53,7 +53,10 @@ Walkthrough Video
 
     ## Video Walkthrough
 
-    Watch the walkthrough video demonstrating the functionality of the Vehicle Builder: https://drive.google.com/file/d/1-V19OzJwm1c2amUO6OFdnKwHhc_GcCMC/view?usp=sharing
+    Watch the walkthrough video demonstrating the functionality of the Vehicle Builder:
+    
+    [![Watch the Video](https://img.shields.io/badge/Watch-Video-blue)](https://drive.google.com/file/d/1-V19OzJwm1c2amUO6OFdnKwHhc_GcCMC/view?usp=sharing)
+    
 
 User Story
 
