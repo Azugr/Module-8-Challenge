@@ -123,7 +123,7 @@ class Cli {
 
     const selectedMakeModels = carModels[answers.make];
 
-    const { model, year, color, weight, topSpeed, wheels } = await inquirer.prompt([
+    const { model, year, color, weight, topSpeed, wheelSize, tireBrand } = await inquirer.prompt([
       {
         type: "list",
         name: "model",
@@ -167,6 +167,10 @@ class Cli {
       },
     ]);
 
+    const wheels = Array(4) // Cars have four wheels
+    .fill(null)
+    .map(() => new Wheel(parseInt(wheelSize, 10), tireBrand));
+
     const newCar = new Car(
       Cli.generateVin(),
       color,
@@ -198,7 +202,7 @@ class Cli {
 
     const selectedMakeModels = truckModels[answers.make];
 
-    const { model, year, color, weight, topSpeed, towingCapacity, wheels } = await inquirer.prompt([
+    const { model, year, color, weight, topSpeed, towingCapacity, wheelSize, tireBrand } = await inquirer.prompt([
       {
         type: "list",
         name: "model",
@@ -247,11 +251,21 @@ class Cli {
       },
       {
         type: "list",
-        name: "wheels",
-        message: "Select the wheel size and brand for the truck:",
-        choices: ["18 inch - Goodyear", "20 inch - Michelin", "22 inch - Bridgestone"],
+        name: "wheelSize",
+        message: "Select the wheel size for the truck (in inches):",
+        choices: ["18", "20", "22"],
+      },
+      {
+        type: "list",
+        name: "tireBrand",
+        message: "Select the tire brand for the truck:",
+        choices: ["Goodyear", "Michelin", "Bridgestone"],
       },
     ]);
+
+    const wheels = Array(6) // Trucks have six wheels
+    .fill(null)
+    .map(() => new Wheel(parseInt(wheelSize, 10), tireBrand));
 
     const newTruck = new Truck(
       Cli.generateVin(),
