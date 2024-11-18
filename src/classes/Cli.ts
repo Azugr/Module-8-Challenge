@@ -240,9 +240,9 @@ class Cli {
         message: "Enter the truck towing capacity (in kg):",
         validate: (input) => {
           const parsed = parseFloat(input);
-          return !isNaN(parsed) && parsed >= 150 && parsed <= 1000
+          return !isNaN(parsed) && parsed > 0
             ? true
-            : "Please enter a valid towing capacity.";
+            : "Towing capacity must be a positive value.";
         },
       },
       {
@@ -270,7 +270,7 @@ class Cli {
     this.startCli();
   }
 
-  // Method to create a Motorbike with prompts and validation
+// Method to create a Motorbike with prompts and validation
 async createMotorbike(): Promise<void> {
   const answers = await inquirer.prompt<{
     make: keyof typeof motorbikeModels;
