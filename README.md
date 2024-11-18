@@ -55,7 +55,6 @@ Walkthrough Video
 
     Watch the walkthrough video demonstrating the functionality of the Vehicle Builder: https://drive.google.com/file/d/1-V19OzJwm1c2amUO6OFdnKwHhc_GcCMC/view?usp=sharing
 
-
 User Story
 
     AS a developer
