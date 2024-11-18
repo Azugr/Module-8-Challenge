@@ -39,7 +39,7 @@ class Truck extends Vehicle implements AbleToTow {
     this.topSpeed = topSpeed;
 
     // Ensure towing capacity is a positive value; throw an error if not
-    if (towingCapacity <= 0) {
+    if (towingCapacity <= 3000) {
       throw new Error('Towing capacity must be a positive value.');
     }
     this.towingCapacity = towingCapacity;
